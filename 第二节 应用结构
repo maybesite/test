@@ -1,0 +1,27 @@
+models.py     //设置博客模型
+from django.db import models
+
+# Create your models here.
+class Article(models.Model):
+    title=models.CharField(max_length=30)
+    content=models.TextField()
+    
+    
+seetings.py
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'article',     //在全局设置里面添加模型
+]
+
+
+admin。py     //把模型添加到后台管理
+from django.contrib import admin
+from .models import Article
+
+# Register your models here.
+admin.site.register(Article)
