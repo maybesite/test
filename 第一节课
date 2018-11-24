@@ -9,3 +9,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('',views.index),
 ]
+
+
+
+views.py
+
+from django.http import HttpResponse
+
+def index(request):
+    return HttpResponse("Hello world")
