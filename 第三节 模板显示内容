@@ -11,6 +11,19 @@ def article_detail(request,article_id):
     #return render(request,'article_detail.html',context)
     return render_to_response('article_detail.html',context)     系统会自动用在article template article_detail.html  不需要其他操作
     #return HttpResponse("文章标题:%s 文章内容%s" % (article.title,article.content))
+    
+template  article_detail.html
+<html>
+<head lang='en'>
+	<meta charset='UTF-8'>
+	<title></title>
+</head>
+<body>
+	<h1>{{article_obj.title}}</h2>
+	<hr>
+	<p>{{article_obj.content}}<p>
+</body>
+</html>
 
 def article_list(request):
     articles=Article.objects.all()               获取所有
@@ -18,6 +31,18 @@ def article_list(request):
     context['articles']=articles
     return render_to_response('article_list.html',context)
  
+ template article_list.html
+<html>
+<head lang='en'>
+	<meta charset='UTF-8'>
+	<title></title>
+</head>
+<body>
+	{% for article in articles %}
+	<a href="{% url 'article_detail' article.pk%}">{{article.title}}</a>
+	{% endfor %}
+</body>
+</html>
  
 mysite urls.py     总urls包含app的urls
 from django.contrib import admin
@@ -40,30 +65,7 @@ urlpatterns = [
 
 
 
-template  article_detail.html
-<html>
-<head lang='en'>
-	<meta charset='UTF-8'>
-	<title></title>
-</head>
-<body>
-	<h1>{{article_obj.title}}</h2>
-	<hr>
-	<p>{{article_obj.content}}<p>
-</body>
-</html>
 
 
-template article_list.html
-<html>
-<head lang='en'>
-	<meta charset='UTF-8'>
-	<title></title>
-</head>
-<body>
-	{% for article in articles %}
-	<a href="{% url 'article_detail' article.pk%}">{{article.title}}</a>
-	{% endfor %}
 
-</body>
-</html>
+
