@@ -1,3 +1,4 @@
+创建app    python manage.py startapp  article
 models.py     //设置博客模型
 from django.db import models
 
