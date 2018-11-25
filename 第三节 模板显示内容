@@ -1,4 +1,4 @@
-acticle  views.py
+acticle  views.py               获取后台内容  并显示
 from django.shortcuts import render,render_to_response,get_object_or_404
 from django.http import HttpResponse
 from .models import Article
@@ -17,17 +17,9 @@ def article_list(request):
     context={}
     context['articles']=articles
     return render_to_response('article_list.html',context)
-    
-    
-article urls.py
-from django.urls import path
-from . import views
-urlpatterns = [
-    path('<int:article_id>',views.article_detail,name="article_detail"),
-    path('',views.article_list),
-]
-
-mysite urls.py
+ 
+ 
+mysite urls.py     总urls包含app的urls
 from django.contrib import admin
 from django.urls import include, path
 from . import views
@@ -37,6 +29,16 @@ urlpatterns = [
     path('',views.index),
     path('article/',include('article.urls'))
 ]
+    
+article urls.py     
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('<int:article_id>',views.article_detail,name="article_detail"),
+    path('',views.article_list),
+]
+
+
 
 template  article_detail.html
 <html>
@@ -44,12 +46,10 @@ template  article_detail.html
 	<meta charset='UTF-8'>
 	<title></title>
 </head>
-
 <body>
 	<h1>{{article_obj.title}}</h2>
 	<hr>
 	<p>{{article_obj.content}}<p>
-	
 </body>
 </html>
 
@@ -60,7 +60,6 @@ template article_list.html
 	<meta charset='UTF-8'>
 	<title></title>
 </head>
-
 <body>
 	{% for article in articles %}
 	<a href="{% url 'article_detail' article.pk%}">{{article.title}}</a>
