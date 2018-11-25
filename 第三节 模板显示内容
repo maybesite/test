@@ -1,7 +1,7 @@
 acticle  views.py               获取后台内容  并显示
 from django.shortcuts import render,render_to_response,get_object_or_404
 from django.http import HttpResponse
-from .models import Article
+from .models import Article         引入
 # Create your views here.
 def article_detail(request,article_id):
     #article=Article.objects.get(id=article_id)
@@ -21,8 +21,8 @@ def article_list(request):
  
 mysite urls.py     总urls包含app的urls
 from django.contrib import admin
-from django.urls import include, path
-from . import views
+from django.urls import include, path      引入include
+from . import views                            
 from article.views import article_detail,article_list
 urlpatterns = [
     path('admin/', admin.site.urls),
