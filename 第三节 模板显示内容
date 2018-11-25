@@ -1,0 +1,70 @@
+acticle  views.py
+from django.shortcuts import render,render_to_response,get_object_or_404
+from django.http import HttpResponse
+from .models import Article
+# Create your views here.
+def article_detail(request,article_id):
+    #article=Article.objects.get(id=article_id)
+    article=get_object_or_404(Article,pk=article_id)
+    context={}
+    context['article_obj']=article
+    #return render(request,'article_detail.html',context)
+    return render_to_response('article_detail.html',context)
+    #return HttpResponse("文章标题:%s 文章内容%s" % (article.title,article.content))
+
+def article_list(request):
+    articles=Article.objects.all()
+    context={}
+    context['articles']=articles
+    return render_to_response('article_list.html',context)
+    
+    
+article urls.py
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('<int:article_id>',views.article_detail,name="article_detail"),
+    path('',views.article_list),
+]
+
+mysite urls.py
+from django.contrib import admin
+from django.urls import include, path
+from . import views
+from article.views import article_detail,article_list
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('',views.index),
+    path('article/',include('article.urls'))
+]
+
+template  article_detail.html
+<html>
+<head lang='en'>
+	<meta charset='UTF-8'>
+	<title></title>
+</head>
+
+<body>
+	<h1>{{article_obj.title}}</h2>
+	<hr>
+	<p>{{article_obj.content}}<p>
+	
+</body>
+</html>
+
+
+template article_list.html
+<html>
+<head lang='en'>
+	<meta charset='UTF-8'>
+	<title></title>
+</head>
+
+<body>
+	{% for article in articles %}
+	<a href="{% url 'article_detail' article.pk%}">{{article.title}}</a>
+	{% endfor %}
+
+</body>
+</html>
