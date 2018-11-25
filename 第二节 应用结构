@@ -1,5 +1,5 @@
 创建app    python manage.py startapp  article
-models.py     //设置博客模型
+article   models.py     //设置博客模型
 from django.db import models
 
 # Create your models here
@@ -8,7 +8,7 @@ class Article(models.Model):
     content=models.TextField()
     
     
-seetings.py
+ mysite  seetings.py    全局设置
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -20,7 +20,7 @@ INSTALLED_APPS = [
 ]
 
 
-admin。py     //把模型添加到后台管理
+article  admin.py     //把模型添加到后台管理
 from django.contrib import admin
 from .models import Article
 
