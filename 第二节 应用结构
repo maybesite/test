@@ -1,7 +1,7 @@
 models.py     //设置博客模型
 from django.db import models
 
-# Create your models here.
+# Create your models here
 class Article(models.Model):
     title=models.CharField(max_length=30)
     content=models.TextField()
@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'article',     //在全局设置里面添加模型
+    'article',     //在全局设置里面添加article文件
 ]
 
 
