@@ -9,7 +9,7 @@ def article_detail(request,article_id):
     context={}
     context['article_obj']=article
     #return render(request,'article_detail.html',context)
-    return render_to_response('article_detail.html',context)
+    return render_to_response('article_detail.html',context)     系统会自动用在article template article_detail.html  不需要其他操作
     #return HttpResponse("文章标题:%s 文章内容%s" % (article.title,article.content))
 
 def article_list(request):
