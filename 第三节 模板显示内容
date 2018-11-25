@@ -59,7 +59,7 @@ article urls.py
 from django.urls import path
 from . import views
 urlpatterns = [
-    path('<int:article_id>',views.article_detail,name="article_detail"),
+    path('<int:article_id>',views.article_detail,name="article_detail"),    name别名
     path('',views.article_list),
 ]
 
