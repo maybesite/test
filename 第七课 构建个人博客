@@ -19,7 +19,7 @@ class BlogType(models.Model):
     type_name=models.CharField(max_length=15)
 
     def __str__(self):                        这个方法会默认执行，并返回相应的值
-        return self.type_name
+        return self.type_name                 就是为了方便在后台查看
 
 class Blog(models.Model):
     title=models.CharField(max_length=50)
