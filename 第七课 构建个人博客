@@ -2,3 +2,5 @@ virtualenv的使用方法
 创建：virtualenv <虚拟环境名称>
 启动：Scripts\activate
 退出：deactivate
+
+创建app   python manage.py 
