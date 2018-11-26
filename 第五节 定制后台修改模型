@@ -1,0 +1,42 @@
+修改模型要更新数据数据库
+python manage.py makemigrations
+python manage.py migrate
+
+
+
+articel models.py 
+from django.db import models
+from django.contrib.auth.models import User
+# Create your models here.
+class Article(models.Model):
+    title=models.CharField(max_length=30)
+    content=models.TextField()
+    create_time=models.DateTimeField(auto_now_add=True)
+    last_updated_time=models.DateTimeField(auto_now=True)
+    author=models.ForeignKey(User,on_delete=models.DO_NOTHING,default=1)   一对多 一个作者对于多篇文章
+    is_deleted=models.BooleanField(default=False)
+    readed_num=models.IntegerField(default=0)
+    
+    def __str__(self):                        鼠标移上去时 显示网址           
+        return "<Article:%s>" %self.title
+    
+
+
+
+article admin.py
+from django.contrib import admin
+from .models import Article
+
+# Register your models here.
+@admin.register(Article)
+class ArticleAdmin(admin.ModelAdmin):
+    list_display=("id","title","content","author","is_deleted","create_time","last_updated_time")    后台显示内容
+    ordering=("id",)    按id从小到大排序      -id 是倒序
+
+article views.py
+def article_list(request):
+    #articles=Article.objects.all()
+    articles=Article.objects.filter(is_deleted=False)   相当于过滤器
+    context={}
+    context['articles']=articles
+    return render_to_response('article_list.html',context)
