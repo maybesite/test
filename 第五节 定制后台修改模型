@@ -28,9 +28,9 @@ from django.contrib import admin
 from .models import Article
 
 # Register your models here.
-@admin.register(Article)
+@admin.register(Article)          使用装饰器  差不多相当于admin.site.register(Article,ArticleAdmin) 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display=("id","title","content","author","is_deleted","create_time","last_updated_time")    后台显示内容
+    list_display=("id","title","content","author","is_deleted","create_time","last_updated_time")    后台显示方式的内容
     ordering=("id",)    按id从小到大排序      -id 是倒序
 
 article views.py
