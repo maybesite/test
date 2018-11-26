@@ -1,6 +1,7 @@
 修改模型要更新数据数据库
 python manage.py makemigrations
 python manage.py migrate
+__str__  设置模型
 
 
 
@@ -17,7 +18,7 @@ class Article(models.Model):
     is_deleted=models.BooleanField(default=False)
     readed_num=models.IntegerField(default=0)
     
-    def __str__(self):                        鼠标移上去时 显示网址           
+    def __str__(self):                                  
         return "<Article:%s>" %self.title
     
 
