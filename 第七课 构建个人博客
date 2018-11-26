@@ -3,4 +3,45 @@ virtualenv的使用方法
 启动：Scripts\activate
 退出：deactivate
 
-创建app   python manage.py 
+更改模型需要同步数据库
+makemigrations会在当前目录下生成一个migrations文件夹，该文件夹的内容就是数据库要执行的内容 
+python manage.py makemigrations
+
+migrate就是执行之前生成的migrations文件，这一步才是操作数据库的一步 
+python manage.py migrate 
+
+创建app   python manage.py startapp  blog
+blog models.py
+from django.db import models
+from django.contrib.auth.models import User
+
+class BlogType(models.Model):
+    type_name=models.CharField(max_length=15)
+
+    def __str__(self):                        这个方法会默认执行，并返回相应的值
+        return self.type_name
+
+class Blog(models.Model):
+    title=models.CharField(max_length=50)
+    blog_type=models.ForeignKey(BlogType,on_delete=models.DO_NOTHING)
+    content=models.TextField()
+    author=models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    created_time=models.DateTimeField(auto_now_add=True)
+    last_updated_time=models.DateTimeField(auto_now=True)
+
+    def __str__(self):                       这个方法会默认执行，并返回相应的值
+        return "<Blog: %s>" %self.title
+
+
+blog  admin.py
+from django.contrib import admin
+from .models import BlogType,Blog
+
+@admin.register(BlogType)
+class BlogTypeAdmin(admin.ModelAdmin):
+    list_display=('id','type_name')
+
+    
+@admin.register(Blog)
+class BlogAdmin(admin.ModelAdmin):
+    list_display=('title','blog_type','author','created_time','last_updated_time')
