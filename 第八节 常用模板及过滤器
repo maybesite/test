@@ -1,0 +1,144 @@
+blog views.py
+from django.shortcuts import render_to_response,get_object_or_404
+from .models import Blog,BlogType
+def blog_list(request):
+    context={}
+    context['blogs']=Blog.objects.all()
+    context['blogs_count']=Blog.objects.all().count()
+    return render_to_response('blog_list.html',context)
+
+def blog_detail(request,blog_pk):
+    context={}
+    context['blog']=get_object_or_404(Blog,pk=blog_pk)
+    return render_to_response('blog_detail.html',context)
+
+def blogs_with_type(request,blog_type_pk):
+    context={}
+    blog_type=get_object_or_404(BlogType,pk=blog_type_pk)
+    context['blogs']=Blog.objects.filter(blog_type=blog_type)
+    context['blog_type']=blog_type
+    return render_to_response('blogs_with_type.html',context)
+    
+    
+mysite urls.py
+from django.contrib import admin
+from django.urls import path,include
+from blog.views import blog_list
+urlpatterns = [
+    path('',blog_list,name="home"),
+    path('admin/', admin.site.urls),
+    path('blog/',include('blog.urls')),
+]
+
+
+blog urls.py
+from django.urls import path
+from . import views
+urlpatterns=[
+    path('<int:blog_pk>',views.blog_detail,name="blog_detail"),
+    path('type/<int:blog_type_pk>',views.blogs_with_type,name="blogs_with_type"),
+]
+
+
+
+blog models.py
+from django.db import models
+from django.contrib.auth.models import User
+class BlogType(models.Model):
+    type_name=models.CharField(max_length=15)
+    def __str__(self):
+        return self.type_name
+class Blog(models.Model):
+    title=models.CharField(max_length=50)
+    blog_type=models.ForeignKey(BlogType,on_delete=models.DO_NOTHING)
+    content=models.TextField()
+    author=models.ForeignKey(User,on_delete=models.DO_NOTHING)
+    created_time=models.DateTimeField(auto_now_add=True)
+    last_updated_time=models.DateTimeField(auto_now=True)
+    def __str__(self):                       
+        return "<Blog: %s>" %self.title
+      
+      
+  blog_detail.html
+  <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ blog.title }}</title>
+</head>
+<body>
+    <a href="{%url 'home'%}">
+            <h3>个人博客网站</h3>
+    </a>
+    <h3>{{ blog.title }}</h3>
+    <p>{{blog.author}}</p>
+    <p>{{blog.created_time|date:"Y-m-d G:n:s"}}</p>
+    <p>分类：
+        <a href='{%url 'blogs_with_type' blog.blog_type.pk%}'>
+        {{blog.blog_type}}
+        </a>
+    </p>
+    <p>{{ blog.content }}</p>
+    
+</body>
+</html>
+
+
+blog_list.html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>我的网站</title>
+</head>
+<body>
+    <div>
+        <a href="{%url 'home'%}">
+            <h3>个人博客网站</h3>
+        </a>
+    </div>
+    <hr>
+    <p>一共有{{blogs|length}}篇博客</p>
+    {{ blogs_count }}
+    {%for blog in blogs%}
+    <a href="{%url 'blog_detail' blog.pk%}">
+        <h3>{{ blog.title }}</h3>
+    </a>
+        
+        <p>{{ blog.content|truncatechars:10 }}</p>
+    {%empty%}
+        <p>--暂无博客--</p>
+    {% endfor %}
+
+</body>
+</html>
+  
+ blog_with_blog.html
+  <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{blog_type.type_name}}</title>
+</head>
+<body>
+    <div>
+        <a href="{%url 'home'%}">
+            <h3>个人博客网站</h3>
+        </a>
+    </div>
+    <hr>
+    {{blog_type.type_name}}
+    <p>一共有{{blogs|length}}篇博客</p>
+    {{ blogs_count }}
+    {%for blog in blogs%}
+    <a href="{%url 'blog_detail' blog.pk%}">
+        <h3>{{ blog.title }}</h3>
+    </a>
+        
+        <p>{{ blog.content|truncatechars_html:10 }}</p>
+    {%empty%}
+        <p>--暂无博客--</p>
+    {% endfor %}
+
+</body>
+</html>
